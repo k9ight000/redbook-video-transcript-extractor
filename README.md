@@ -1,63 +1,68 @@
-# redbook-video-transcript-extractor
+# 小红书链接提取文字稿字幕 / Redbook Video Transcript Extractor
 
-小红书链接提取文字稿字幕工具。输入一个小红书/Redbook 分享链接，工具会自动下载视频并生成文字稿、结构化 JSON 和 SRT 字幕文件。
+中文名：小红书链接提取文字稿字幕  
+English name: Redbook Video Transcript Extractor
+Repository name: `redbook-video-transcript-extractor`
 
-> 建议 GitHub 仓库名：`redbook-video-transcript-extractor`
+输入一个小红书/Redbook 分享链接，自动下载视频，并生成文字稿、JSON 结果和 SRT 字幕文件。这个项目优先面向中文用户，README 采用中文为主、英文辅助的形式。
 
-## Features
+Paste a Xiaohongshu/Redbook share link, download the video, and export transcript text, JSON data, and SRT subtitles. This repository is primarily written for Chinese-speaking users, with English notes included where helpful.
 
-- Paste a Xiaohongshu/Redbook share link and process it from the command line or a double-click launcher.
-- Download video content through [XHS-Downloader](https://github.com/JoeanAmier/XHS-Downloader).
-- Generate a transcript bundle with `transcript.txt`, `transcript.json`, `transcript.srt`, `note.json`, and `meta.json`.
-- Use local CPU transcription with `faster-whisper`.
-- Use an OpenAI-compatible transcription API when `OPENAI_API_KEY` is configured.
-- Keep generated downloads/transcripts outside the source tree by default.
+## 功能 Features
 
-## Easiest Windows Usage
+- 输入小红书分享链接，自动处理视频下载和转写。
+- 支持命令行运行，也支持 Windows 双击式启动体验。
+- 通过 [XHS-Downloader](https://github.com/JoeanAmier/XHS-Downloader) 下载小红书视频。
+- 输出 `transcript.txt`、`transcript.json`、`transcript.srt`、`note.json`、`meta.json`。
+- 支持本地 `faster-whisper` 转写，适合不想上传音视频的场景。
+- 支持 OpenAI-compatible transcription API，适合有 API key、希望更快处理的场景。
+- 默认把下载视频和转写结果放在用户目录，不污染源码仓库。
 
-1. Download or clone this repository.
-2. Double-click `launcher.py`, or run it from PowerShell:
+## 最简单的 Windows 用法
+
+1. 下载或 clone 这个仓库。
+2. 双击 `launcher.py`，或在 PowerShell 中运行：
 
 ```powershell
 python .\launcher.py
 ```
 
-3. Paste a Xiaohongshu/Redbook share link when prompted.
-4. Wait for the transcript bundle path printed at the end.
+3. 根据提示粘贴小红书分享链接。
+4. 等待处理完成，终端会打印输出文件夹路径。
 
-The default launcher uses local transcription:
+默认启动器使用本地转写模式：
 
 ```powershell
 .\xhs-video-to-text.ps1 -Url "https://xhslink.com/xxxx" -Local -LocalModel medium -LocalLanguage zh
 ```
 
-On first run, the PowerShell script prepares a portable Python runtime, installs Python dependencies, clones XHS-Downloader into `third_party\XHS-Downloader`, and stores local model/cache files under this repository.
+第一次运行时，脚本会自动准备便携 Python、安装依赖、把 XHS-Downloader clone 到 `third_party\XHS-Downloader`，并把模型和缓存放到仓库内的本地目录。
 
-## Output
+## 输出文件
 
-By default, output files are written under:
+默认转写结果目录：
 
 ```text
 %USERPROFILE%\ai-media\xhs-video-transcriber\transcripts
 ```
 
-Each run creates a timestamped folder containing:
+每次运行会创建一个带时间戳的文件夹，里面包含：
 
-- `transcript.txt`: plain text transcript.
-- `transcript.json`: raw transcript payload and segments when available.
-- `transcript.srt`: subtitle file, created when segment timestamps are available.
-- `note.json`: metadata returned by XHS-Downloader.
-- `meta.json`: local run metadata such as source video path and title.
+- `transcript.txt`：纯文本文字稿。
+- `transcript.json`：结构化转写结果，包含分段信息时会保留 segments。
+- `transcript.srt`：字幕文件，有时间轴分段时生成。
+- `note.json`：XHS-Downloader 返回的小红书笔记信息。
+- `meta.json`：本次运行的本地元信息，例如视频路径、标题、创建时间。
 
-Downloaded media is stored under:
+默认下载视频目录：
 
 ```text
 %USERPROFILE%\ai-media\xhs-video-transcriber\downloads
 ```
 
-## Configuration
+## 路径配置
 
-You can override paths with parameters:
+可以通过参数覆盖默认路径：
 
 ```powershell
 .\xhs-video-to-text.ps1 `
@@ -68,30 +73,30 @@ You can override paths with parameters:
   -XhsRepo "D:\redbook-transcriber\XHS-Downloader"
 ```
 
-Supported environment variables:
+支持的环境变量：
 
-- `XHS_COOKIE`: optional Xiaohongshu web cookie. Some links may require it.
-- `OPENAI_API_KEY`: required for API transcription mode.
-- `OPENAI_BASE_URL`: optional OpenAI-compatible API base URL.
-- `XHS_DOWNLOADER_REPO`: use an existing local XHS-Downloader checkout.
-- `XHS_TRANSCRIBER_DATA_ROOT`: override the default data directory.
-- `XHS_TRANSCRIBER_DOWNLOAD_ROOT`: override the download directory.
-- `XHS_TRANSCRIBER_OUTPUT_ROOT`: override the transcript output directory.
-- `XHS_TRANSCRIBER_MODEL_ROOT`: override the local Whisper model directory.
-- `XHS_TRANSCRIBER_PY_HOME`: override the embedded Python directory.
-- `XHS_TRANSCRIBER_UV_CACHE`: override the uv cache directory.
-- `XHS_TRANSCRIBER_UV_BIN`: override the local uv binary directory.
+- `XHS_COOKIE`：可选，小红书网页 Cookie。部分链接可能需要。
+- `OPENAI_API_KEY`：API 转写模式需要。
+- `OPENAI_BASE_URL`：可选，OpenAI-compatible API 地址。
+- `XHS_DOWNLOADER_REPO`：使用已有的本地 XHS-Downloader 目录。
+- `XHS_TRANSCRIBER_DATA_ROOT`：覆盖默认数据目录。
+- `XHS_TRANSCRIBER_DOWNLOAD_ROOT`：覆盖下载目录。
+- `XHS_TRANSCRIBER_OUTPUT_ROOT`：覆盖转写结果目录。
+- `XHS_TRANSCRIBER_MODEL_ROOT`：覆盖本地 Whisper 模型目录。
+- `XHS_TRANSCRIBER_PY_HOME`：覆盖便携 Python 目录。
+- `XHS_TRANSCRIBER_UV_CACHE`：覆盖 uv 缓存目录。
+- `XHS_TRANSCRIBER_UV_BIN`：覆盖本地 uv 程序目录。
 
-## API Mode
+## API 转写模式
 
-Local mode is the default recommendation for one-click use. To use an OpenAI-compatible transcription API instead:
+如果不想使用本地转写，也可以使用 OpenAI-compatible transcription API：
 
 ```powershell
 $env:OPENAI_API_KEY = "sk-..."
 .\xhs-video-to-text.ps1 -Url "https://xhslink.com/xxxx" -Model "whisper-1"
 ```
 
-If your provider uses a custom endpoint:
+如果你的服务商使用自定义 API 地址：
 
 ```powershell
 $env:OPENAI_API_KEY = "your-key"
@@ -99,48 +104,80 @@ $env:OPENAI_BASE_URL = "https://your-provider.example/v1"
 .\xhs-video-to-text.ps1 -Url "https://xhslink.com/xxxx" -Model "whisper-1"
 ```
 
-API mode keeps the original 25 MB upload limit check for transcription requests.
+注意：API 模式保留 25 MB 上传限制检查，视频太大时建议使用本地模式。
 
-## Project Layout
+## 项目结构
 
 ```text
 .
-├── launcher.py
-├── xhs-video-to-text.ps1
-├── xhs_to_transcript.py
-├── XhsVideoToText.spec
-└── packaging
-    ├── XhsVideoToText.cs
-    └── launch-xhs-video-to-text.cmd
+|-- launcher.py
+|-- xhs-video-to-text.ps1
+|-- xhs_to_transcript.py
+|-- XhsVideoToText.spec
+`-- packaging
+    |-- XhsVideoToText.cs
+    `-- launch-xhs-video-to-text.cmd
 ```
 
-Generated local-only folders such as `python312-embed`, `.cache`, `third_party`, `models`, `downloads`, and `transcripts` are intentionally ignored by Git.
+这些目录通常是本地生成的，不应该提交到 Git：
 
-## Packaging
+- `python312-embed`
+- `.cache`
+- `third_party`
+- `models`
+- `downloads`
+- `transcripts`
 
-For public GitHub releases, prefer this structure:
+## 打包和发布建议
 
-- Keep source code in the repository.
-- Put built executables in GitHub Releases assets instead of committing them to Git.
-- Include `XhsVideoToText.exe`, `xhs-video-to-text.ps1`, and `xhs_to_transcript.py` together if using an external wrapper release package.
+公开 GitHub 仓库建议只放源码，不直接提交 `.exe`。
 
-PyInstaller users can build from the included spec:
+更推荐的发布方式：
+
+- 源码放在仓库里。
+- 打包好的 `XhsVideoToText.exe` 放到 GitHub Releases 附件。
+- 如果做 release zip，建议把 `XhsVideoToText.exe`、`xhs-video-to-text.ps1`、`xhs_to_transcript.py` 放在同一个目录。
+
+PyInstaller 打包：
 
 ```powershell
 pyinstaller .\XhsVideoToText.spec
 ```
 
-The spec uses paths relative to the repository root and bundles the PowerShell/helper scripts as data for the launcher.
+当前 spec 已经改成基于仓库目录的相对路径，并会把 PowerShell 脚本和 Python helper 作为 data 一起打包。
 
-## Notes and Limitations
+## 依赖和限制
 
-- This project is currently Windows-first and expects PowerShell.
-- First run requires network access to download portable Python, install uv/dependencies, and clone XHS-Downloader.
-- Local CPU transcription can be slow, especially with larger Whisper models.
-- Local models and caches may take several GB of disk space.
-- Some Xiaohongshu links may require `XHS_COOKIE`.
-- Do not commit cookies, API keys, downloaded videos, transcripts, local models, or cache folders.
+- 当前项目偏 Windows，依赖 PowerShell。
+- 第一次运行需要联网下载便携 Python、安装 uv/依赖、clone XHS-Downloader。
+- 本地 CPU 转写可能比较慢，模型越大越慢。
+- 本地模型和缓存可能占用数 GB 磁盘空间。
+- 部分小红书链接可能需要设置 `XHS_COOKIE`。
+- 不要提交 API key、Cookie、下载视频、转写结果、本地模型和缓存目录。
 
-## Legal and Platform Notice
+## English Quick Start
+
+This is a Windows-first tool for extracting transcripts/subtitles from Xiaohongshu/Redbook video links.
+
+```powershell
+python .\launcher.py
+```
+
+Or run the PowerShell script directly:
+
+```powershell
+.\xhs-video-to-text.ps1 -Url "https://xhslink.com/xxxx" -Local -LocalModel medium -LocalLanguage zh
+```
+
+Use API mode with:
+
+```powershell
+$env:OPENAI_API_KEY = "sk-..."
+.\xhs-video-to-text.ps1 -Url "https://xhslink.com/xxxx" -Model "whisper-1"
+```
+
+## 法律和平台说明
+
+请只处理你有权访问和使用的内容。使用本工具时请遵守小红书/Redbook 平台规则、版权要求、隐私要求和当地法律。
 
 Use this tool only for content you are allowed to access and process. Respect Xiaohongshu/Redbook's terms, copyright, privacy, and local law.
