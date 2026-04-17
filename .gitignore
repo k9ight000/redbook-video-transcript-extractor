@@ -1,0 +1,63 @@
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+
+# Local environments and portable runtimes
+.venv/
+venv/
+python312-embed/
+python-*-embed-*.zip
+
+# Dependency/cache directories
+.cache/
+uv-cache/
+hf-cache/
+ct2-cache/
+
+# Local models and third-party checkouts
+models/
+third_party/
+vendor/
+xhs-downloader-v*/
+XHS-Downloader*/
+XHS-Downloader_V*_Windows_X64.zip
+
+# Build/package outputs
+build/
+dist/
+runtime-tmp/
+tmp/
+exe-temp/
+*.spec.bak
+
+# Runtime outputs
+downloads/
+transcripts/
+ai-media/
+*.mp4
+*.mov
+*.m4v
+*.webm
+*.srt
+*.vtt
+*.log
+
+# Secrets and local settings
+.env
+.env.*
+*.key
+*.pem
+settings.json
+cookies.txt
+pywrite.txt
+
+# OS/editor noise
+.DS_Store
+Thumbs.db
+desktop.ini
+.idea/
+.vscode/
