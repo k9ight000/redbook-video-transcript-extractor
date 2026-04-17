@@ -3,7 +3,6 @@
 from pathlib import Path
 
 spec_root = Path(SPECPATH)
-runtime_tmp = spec_root / "runtime-tmp"
 
 
 a = Analysis(
@@ -36,7 +35,7 @@ exe = EXE(
     strip=False,
     upx=True,
     upx_exclude=[],
-    runtime_tmpdir=str(runtime_tmp),
+    runtime_tmpdir="runtime-tmp",
     console=True,
     disable_windowed_traceback=False,
     argv_emulation=False,

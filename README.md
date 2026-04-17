@@ -20,6 +20,15 @@ Paste a Xiaohongshu/Redbook share link, download the video, and export transcrip
 
 ## 最简单的 Windows 用法
 
+如果你只是想一键使用，推荐下载 GitHub Releases 里的 Windows zip：
+
+1. 下载 `redbook-video-transcript-extractor-windows-x64.zip`。
+2. 解压到一个普通文件夹，例如桌面或 `D:\Tools\redbook-video-transcript-extractor`。
+3. 双击 `XhsVideoToText.exe`。
+4. 粘贴小红书分享链接，然后回车。
+
+如果你是从源码运行：
+
 1. 下载或 clone 这个仓库。
 2. 双击 `launcher.py`，或在 PowerShell 中运行：
 
@@ -158,6 +167,8 @@ pyinstaller .\XhsVideoToText.spec
 ## English Quick Start
 
 This is a Windows-first tool for extracting transcripts/subtitles from Xiaohongshu/Redbook video links.
+
+For one-click usage, download `redbook-video-transcript-extractor-windows-x64.zip` from GitHub Releases, unzip it, and double-click `XhsVideoToText.exe`.
 
 ```powershell
 python .\launcher.py
